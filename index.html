@@ -4,46 +4,263 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Game Table Version 3.0</title>
-  <link rel="stylesheet" href="style.css"> <!-- Linking to the external CSS -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2em;
+      padding: 10px;
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      background: #fff;
+      z-index: 1000;
+      padding: 10px 0;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    select {
+      padding: 10px;
+      font-size: 1.2em;
+    }
+
+    button {
+      padding: 10px 15px;
+      font-size: 1.2em;
+      cursor: pointer;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .game-table {
+      width: 100%;
+      max-width: 1000px;
+      margin: 20px auto;
+      background: #ffffff;
+      padding: 10px;
+    }
+
+    .row {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+      padding: 8px 0;
+      align-items: center;
+    }
+
+    .date {
+      width: 80px;
+      text-align: center;
+      font-weight: bold;
+      background-color: #f0f0f0;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bazi-results {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .bazi-box {
+      flex: 1;
+      height: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #e0e7ff;
+      margin: 5px;
+      font-size: 1.5em;
+      font-weight: bold;
+      border-radius: 5px;
+      position: relative;
+      text-align: center;
+    }
+
+    .bazi-number {
+      font-size: 1.5em;
+    }
+
+    .sum-digit {
+      font-size: 1.5em;
+      color: #333;
+      margin-top: 8px;
+    }
+
+    /* Box Container for Sticky Horizontal Result Boxes */
+    .box-container {
+      display: flex;
+      position: sticky;
+      top: 60px;
+      background-color: #f8f9fa;
+      padding: 10px 0;
+      z-index: 999;
+      justify-content: space-around;
+      gap: 10px;
+    }
+
+    .box {
+      background-color: #e0f7fa;
+      padding: 15px 20px;
+      border-radius: 5px;
+      text-align: center;
+      font-size: 1.2em;
+      font-weight: bold;
+      width: 100px;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .date {
+        font-size: 0.9em;
+      }
+
+      .bazi-box {
+        font-size: 1.2em;
+        height: 70px;
+      }
+
+      .box {
+        font-size: 1em;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.2em;
+      }
+
+      .date {
+        width: 60px;
+        font-size: 0.75em;
+      }
+
+      .bazi-box {
+        font-size: 1em;
+        height: 60px;
+      }
+
+      .box {
+        font-size: 0.9em;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1 style="text-align: center;">Game Table Version 3.0</h1>
+
+  <h1>Game Table Version 3.0</h1>
   
-  <table class="game-table">
-    <thead>
-      <tr>
-        <th>Player Name</th>
-        <th>Score</th>
-        <th>Level</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Alice</td>
-        <td>1200</td>
-        <td>5</td>
-        <td>Active</td>
-      </tr>
-      <tr>
-        <td>Bob</td>
-        <td>900</td>
-        <td>4</td>
-        <td>Inactive</td>
-      </tr>
-      <tr>
-        <td>Charlie</td>
-        <td>1500</td>
-        <td>6</td>
-        <td>Active</td>
-      </tr>
-      <tr>
-        <td>Daisy</td>
-        <td>800</td>
-        <td>3</td>
-        <td>Inactive</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="header">
+    <select id="gameSelector">
+      <option value="kolkataFatafat">Kolkata Fatafat</option>
+      <option value="mainBazar">Main Bazar</option>
+      <option value="gmMatka">GM Matka</option>
+    </select>
+    <button id="playButton">Play</button>
+  </div>
+
+  <!-- Sticky Result Boxes -->
+  <div class="box-container">
+    <div class="box" style="background-color: #e0f7fa;">Single</div>
+    <div class="box" style="background-color: #ffe0b2;">Patti</div>
+    <div class="box" style="background-color: #c8e6c9;">Juri</div>
+  </div>
+
+  <div class="game-table" id="gameTable"></div>
+
+  <script>
+    const gameData = {
+      "kolkataFatafat": [
+        { date: 'Wed 15/01', values: [469, 138, 678, 577, 290, 880, 458, 236] },
+        { date: 'Thu 16/01', values: [460, 790, 789, 239, 345, 290, 680, 899] }
+      ],
+      "mainBazar": [
+        { date: 'Fri 17/01', values: [340, 447, 167, 670, 237, 468, 770, 378] },
+        { date: 'Sat 18/01', values: [480, 159, 399, 358, 140, 460, 289, 889] }
+      ],
+      "gmMatka": [
+        { date: 'Sun 19/01', values: [256, 135, 459, 344, 100, 200, 345, 456] },
+        { date: 'Mon 20/01', values: [138, 349, 160, 269, 100, 380, 368, 560] }
+      ]
+    };
+
+    function calculateSumOfDigits(number) {
+      const digits = number.toString().split('').map(Number);
+      return digits.reduce((acc, digit) => acc + digit, 0) % 10;
+    }
+
+    function createRow(date, values) {
+      const row = document.createElement('div');
+      row.classList.add('row');
+
+      const dateBox = document.createElement('div');
+      dateBox.classList.add('date');
+      dateBox.textContent = date;
+      row.appendChild(dateBox);
+
+      const baziResults = document.createElement('div');
+      baziResults.classList.add('bazi-results');
+
+      values.forEach(value => {
+        const baziBox = document.createElement('div');
+        baziBox.classList.add('bazi-box');
+
+        const numberSpan = document.createElement('div');
+        numberSpan.classList.add('bazi-number');
+        numberSpan.textContent = value;
+
+        const sumDigit = calculateSumOfDigits(value);
+        const sumSpan = document.createElement('div');
+        sumSpan.classList.add('sum-digit');
+        sumSpan.textContent = sumDigit;
+
+        baziBox.appendChild(numberSpan);
+        baziBox.appendChild(sumSpan);
+        baziResults.appendChild(baziBox);
+      });
+
+      row.appendChild(baziResults);
+      return row;
+    }
+
+    const gameTable = document.getElementById('gameTable');
+    const gameSelector = document.getElementById('gameSelector');
+
+    function populateTable(selectedGame) {
+      gameTable.innerHTML = '';
+      gameData[selectedGame].forEach(entry => {
+        const row = createRow(entry.date, entry.values);
+        gameTable.appendChild(row);
+      });
+    }
+
+    gameSelector.addEventListener('change', () => {
+      populateTable(gameSelector.value);
+    });
+
+    // Populate initial game table
+    populateTable(gameSelector.value);
+  </script>
+
 </body>
 </html>
