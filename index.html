@@ -57,111 +57,85 @@
       padding: 10px;
     }
 
-    .row {
-      display: flex;
-      border-bottom: 1px solid #ddd;
-      padding: 8px 0;
-      align-items: center;
-    }
-
-    .date {
-      width: 80px;
-      text-align: center;
-      font-weight: bold;
-      background-color: #f0f0f0;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .bazi-results {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-    }
-
-    .bazi-box {
-      flex: 1;
-      height: 80px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background-color: #e0e7ff;
-      margin: 5px;
-      font-size: 1.5em;
-      font-weight: bold;
-      border-radius: 5px;
-      position: relative;
-      text-align: center;
-    }
-
-    .bazi-number {
-      font-size: 1.5em;
-    }
-
-    .sum-digit {
-      font-size: 1.5em;
-      color: #333;
-      margin-top: 8px;
-    }
-
-    /* Box Container for Sticky Horizontal Result Boxes */
-    .box-container {
-      display: flex;
-      position: sticky;
-      top: 60px;
-      background-color: #f8f9fa;
-      padding: 10px 0;
-      z-index: 999;
-      justify-content: space-around;
-      gap: 10px;
-    }
-
-    .box {
-      background-color: #e0f7fa;
-      padding: 15px 20px;
-      border-radius: 5px;
-      text-align: center;
+    .wallet {
+      text-align: left;
       font-size: 1.2em;
+      margin: 10px 20px;
+      color: #333;
       font-weight: bold;
-      width: 100px;
+    }
+
+    .login-form, .game-area {
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 15px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .game-area {
+      display: none;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input[type="text"], input[type="password"], input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .number-selection {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .number-box {
+      width: 40px;
+      height: 40px;
+      background-color: #e0f7fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 4px;
+      border: 2px solid transparent;
+    }
+
+    .number-box.selected {
+      background-color: #007bff;
+      color: white;
+      border: 2px solid #0056b3;
+    }
+
+    .amount-section {
+      margin-top: 15px;
+    }
+
+    .amount-section input[type="number"] {
+      max-width: 100px;
+    }
+
+    .summary {
+      margin-top: 10px;
+      font-weight: bold;
     }
 
     /* Responsive Adjustments */
     @media (max-width: 768px) {
-      .date {
-        font-size: 0.9em;
-      }
-
-      .bazi-box {
-        font-size: 1.2em;
-        height: 70px;
-      }
-
-      .box {
-        font-size: 1em;
-      }
-    }
-
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 1.2em;
-      }
-
-      .date {
-        width: 60px;
-        font-size: 0.75em;
-      }
-
-      .bazi-box {
-        font-size: 1em;
-        height: 60px;
-      }
-
-      .box {
-        font-size: 0.9em;
+      .number-box {
+        width: 30px;
+        height: 30px;
       }
     }
   </style>
@@ -169,7 +143,7 @@
 <body>
 
   <h1>Game Table Version 3.0</h1>
-  
+
   <div class="header">
     <select id="gameSelector">
       <option value="kolkataFatafat">Kolkata Fatafat</option>
@@ -179,87 +153,85 @@
     <button id="playButton">Play</button>
   </div>
 
-  <!-- Sticky Result Boxes -->
-  <div class="box-container">
-    <div class="box" style="background-color: #e0f7fa;">Single</div>
-    <div class="box" style="background-color: #ffe0b2;">Patti</div>
-    <div class="box" style="background-color: #c8e6c9;">Juri</div>
+  <div class="wallet" id="walletDisplay">Wallet: $500</div>
+
+  <div class="login-form" id="loginForm">
+    <h2>Login or Register</h2>
+    <label for="username">Username</label>
+    <input type="text" id="username" placeholder="Enter Username">
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Enter Password">
+    <button id="loginButton">Login/Register</button>
   </div>
 
-  <div class="game-table" id="gameTable"></div>
+  <div class="game-area" id="gameArea">
+    <h2>Select Your Numbers</h2>
+    <div class="number-selection" id="numberSelection"></div>
+    <div class="amount-section">
+      <label for="amountInput">Enter Amount (Minimum $10)</label>
+      <input type="number" id="amountInput" min="10" placeholder="Amount">
+      <button id="submitSelectionButton">Submit Selection</button>
+    </div>
+    <div class="summary" id="summary"></div>
+  </div>
 
   <script>
-    const gameData = {
-      "kolkataFatafat": [
-        { date: 'Wed 15/01', values: [469, 138, 678, 577, 290, 880, 458, 236] },
-        { date: 'Thu 16/01', values: [460, 790, 789, 239, 345, 290, 680, 899] }
-      ],
-      "mainBazar": [
-        { date: 'Fri 17/01', values: [340, 447] },
-        { date: 'Sat 18/01', values: [480, 159] }
-      ],
-      "gmMatka": [
-        { date: 'Sun 19/01', values: [256, 135, 459, 344, 100, 200, 345, 456] },
-        { date: 'Mon 20/01', values: [138, 349, 160, 269, 100, 380, 368, 560] }
-      ]
-    };
+    let wallet = 500;
 
-    function calculateSumOfDigits(number) {
-      const digits = number.toString().split('').map(Number);
-      return digits.reduce((acc, digit) => acc + digit, 0) % 10;
-    }
-
-    function createRow(date, values) {
-      const row = document.createElement('div');
-      row.classList.add('row');
-
-      const dateBox = document.createElement('div');
-      dateBox.classList.add('date');
-      dateBox.textContent = date;
-      row.appendChild(dateBox);
-
-      const baziResults = document.createElement('div');
-      baziResults.classList.add('bazi-results');
-
-      values.forEach(value => {
-        const baziBox = document.createElement('div');
-        baziBox.classList.add('bazi-box');
-
-        const numberSpan = document.createElement('div');
-        numberSpan.classList.add('bazi-number');
-        numberSpan.textContent = value;
-
-        const sumDigit = calculateSumOfDigits(value);
-        const sumSpan = document.createElement('div');
-        sumSpan.classList.add('sum-digit');
-        sumSpan.textContent = sumDigit;
-
-        baziBox.appendChild(numberSpan);
-        baziBox.appendChild(sumSpan);
-        baziResults.appendChild(baziBox);
-      });
-
-      row.appendChild(baziResults);
-      return row;
-    }
-
-    const gameTable = document.getElementById('gameTable');
-    const gameSelector = document.getElementById('gameSelector');
-
-    function populateTable(selectedGame) {
-      gameTable.innerHTML = '';
-      gameData[selectedGame].forEach(entry => {
-        const row = createRow(entry.date, entry.values);
-        gameTable.appendChild(row);
-      });
-    }
-
-    gameSelector.addEventListener('change', () => {
-      populateTable(gameSelector.value);
+    document.getElementById('playButton').addEventListener('click', () => {
+      document.getElementById('loginForm').style.display = 'block';
     });
 
-    // Populate initial game table
-    populateTable(gameSelector.value);
+    document.getElementById('loginButton').addEventListener('click', () => {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      if (username === 'test@demo.com' && password === '12345') {
+        alert('Login Successful!');
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('gameArea').style.display = 'block';
+      } else {
+        alert('Invalid Credentials! Please use test@demo.com and password 12345');
+      }
+    });
+
+    // Create number selection boxes (0 to 9)
+    const numberSelectionContainer = document.getElementById('numberSelection');
+    for (let i = 0; i <= 9; i++) {
+      const numberBox = document.createElement('div');
+      numberBox.textContent = i;
+      numberBox.classList.add('number-box');
+      numberBox.addEventListener('click', () => {
+        numberBox.classList.toggle('selected');
+      });
+      numberSelectionContainer.appendChild(numberBox);
+    }
+
+    document.getElementById('submitSelectionButton').addEventListener('click', () => {
+      const selectedNumbers = Array.from(document.querySelectorAll('.number-box.selected')).map(box => box.textContent);
+      const amount = parseInt(document.getElementById('amountInput').value);
+
+      if (selectedNumbers.length === 0) {
+        alert('Please select at least one number.');
+        return;
+      }
+
+      if (!amount || amount < 10) {
+        alert('Please enter a valid amount (minimum $10).');
+        return;
+      }
+
+      const totalCost = selectedNumbers.length * amount;
+
+      if (totalCost > wallet) {
+        alert('Insufficient wallet balance.');
+        return;
+      }
+
+      wallet -= totalCost;
+      document.getElementById('walletDisplay').textContent = `Wallet: $${wallet}`;
+      document.getElementById('summary').textContent = `You selected numbers: ${selectedNumbers.join(', ')} with a total bet of $${totalCost}`;
+    });
   </script>
 
 </body>
