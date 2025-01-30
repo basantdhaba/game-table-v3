@@ -65,7 +65,7 @@
       font-weight: bold;
     }
 
-    .login-form, .game-area {
+    .login-form, .play-area {
       max-width: 500px;
       margin: 20px auto;
       padding: 15px;
@@ -74,7 +74,7 @@
       box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     }
 
-    .game-area {
+    .play-area {
       display: none;
     }
 
@@ -130,14 +130,6 @@
       margin-top: 10px;
       font-weight: bold;
     }
-
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-      .number-box {
-        width: 30px;
-        height: 30px;
-      }
-    }
   </style>
 </head>
 <body>
@@ -155,6 +147,10 @@
 
   <div class="wallet" id="walletDisplay">Wallet: $500</div>
 
+  <!-- Result Table Always Visible -->
+  <div class="game-table" id="gameTable"></div>
+
+  <!-- Login Form -->
   <div class="login-form" id="loginForm">
     <h2>Login or Register</h2>
     <label for="username">Username</label>
@@ -164,13 +160,14 @@
     <button id="loginButton">Login/Register</button>
   </div>
 
-  <div class="game-area" id="gameArea">
+  <!-- Play Area for Number Selection -->
+  <div class="play-area" id="playArea">
     <h2>Select Your Numbers</h2>
     <div class="number-selection" id="numberSelection"></div>
     <div class="amount-section">
       <label for="amountInput">Enter Amount (Minimum $10)</label>
       <input type="number" id="amountInput" min="10" placeholder="Amount">
-      <button id="submitSelectionButton">Submit Selection</button>
+      <button id="submitSelectionButton">Submit</button>
     </div>
     <div class="summary" id="summary"></div>
   </div>
@@ -189,7 +186,7 @@
       if (username === 'test@demo.com' && password === '12345') {
         alert('Login Successful!');
         document.getElementById('loginForm').style.display = 'none';
-        document.getElementById('gameArea').style.display = 'block';
+        document.getElementById('playArea').style.display = 'block';
       } else {
         alert('Invalid Credentials! Please use test@demo.com and password 12345');
       }
