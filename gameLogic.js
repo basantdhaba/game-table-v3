@@ -1,61 +1,23 @@
 // gameLogic.js
 let wallet = 500;
 
-function showLoginForm() { /* ... (same as before) ... */ }
-function hideLoginForm() { /* ... (same as before) ... */ }
-function showWallet() { /* ... (same as before) ... */ }
+// ... (showLoginForm, hideLoginForm, showWallet functions - same as before)
 
-document.getElementById('playButton').addEventListener('click', showLoginForm);
-document.getElementById('singleButton').addEventListener('click', showLoginForm);
-document.getElementById('pattiButton').addEventListener('click', showLoginForm);
-document.getElementById('juriButton').addEventListener('click', showLoginForm);
+// ... (Event listeners for buttons - same as before)
 
-document.getElementById('loginButton').addEventListener('click', () => { /* ... */ }); // Same as before
-document.getElementById('addMoneyButton').addEventListener('click', () => { /* ... */ }); // Same as before
+// ... (fetchData function - same as before)
 
+function createRow(date, values) {
+    const row = document.createElement('div');
+    row.classList.add('row');
 
-async function fetchData(game) {  // *** KEY CHANGE: Async function, error handling
-    try {
-        const response = await fetch(`/api/games/${game}`); // Replace with your API URL
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    } catch (error) {
-        console.error("Error fetching data:", error);
-        return []; // Return empty array on error
-    }
-}
+    const dateBox = document.createElement('div');
+    dateBox.classList.add('date');
+    dateBox.textContent = date;
+    row.appendChild(dateBox);
 
-function createRow(date, values) { /* ... (same as before) ... */ }
+    const baziResults = document.createElement('div');
+    baziResults.classList.add('bazi-results');
 
-const gameTable = document.getElementById('gameTable');
-const gameSelector = document.getElementById('gameSelector');
-
-async function populateTable(selectedGame) { // *** KEY CHANGE: Async function
-    gameTable.innerHTML = ''; // *** KEY CHANGE: Clear the table!
-
-    const data = await fetchData(selectedGame); // *** KEY CHANGE: Fetch data
-
-    if (data.length === 0) { // Handle no data case
-        const message = document.createElement('p');
-        message.textContent = "No data available for this game.";
-        gameTable.appendChild(message);
-        return; // Stop here if no data
-    }
-
-    data.forEach(entry => {
-        const row = createRow(entry.date, entry.values);
-        gameTable.appendChild(row);
-    });
-}
-
-gameSelector.addEventListener('change', () => {
-    populateTable(gameSelector.value);
-});
-
-populateTable(gameSelector.value); // Initial population
-
-window.showLoginForm = showLoginForm; // Expose if needed
-window.hideLoginForm = hideLoginForm;
-window.showWallet = showWallet;
+    values.forEach(value => {
+        const baziBox = document.
