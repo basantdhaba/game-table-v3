@@ -18,7 +18,7 @@ function getMultiplier(betType) {
     }
 }
 
-// Example UI interaction for the game
+// Handle bet calculation and display results
 function handleBetCalculation() {
     const betAmount = parseFloat(document.getElementById('betAmount').value);
     const betType = document.getElementById('betType').value;
@@ -26,4 +26,12 @@ function handleBetCalculation() {
     const winnings = calculateWinning(betAmount, multiplier);
 
     document.getElementById('result').textContent = `Potential Winnings: $${winnings.toFixed(2)}`;
+    addToTable(betAmount, betType, winnings);
+}
+
+// Update result table
+function addToTable(betAmount, betType, winnings) {
+    const table = document.getElementById('resultTable');
+    const newRow = table.insertRow();
+    newRow.innerHTML = `<td>${betAmount}</td><td>${betType}</td><td>${winnings.toFixed(2)}</td>`;
 }
