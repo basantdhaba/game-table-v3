@@ -1,23 +1,70 @@
 // gameLogic.js
 let wallet = 500;
+let isLoggedIn = false; // Track login status
 
-// ... (showLoginForm, hideLoginForm, showWallet functions - same as before)
+// ... (showWallet function - same as before)
 
-// ... (Event listeners for buttons - same as before)
+function showLoginForm() {
+    if (!isLoggedIn) { // Only show if not logged in
+        document.getElementById('loginForm').style.display = 'block';
+    }
+}
 
-// ... (fetchData function - same as before)
+function hideLoginForm() {
+    document.getElementById('loginForm').style.display = 'none';
+}
 
-function createRow(date, values) {
-    const row = document.createElement('div');
-    row.classList.add('row');
+// ... (Event listeners for Play, Single, Patti, Juri buttons)
 
-    const dateBox = document.createElement('div');
-    dateBox.classList.add('date');
-    dateBox.textContent = date;
-    row.appendChild(dateBox);
+// Event listener for the login button
+document.getElementById('loginButton').addEventListener('click', () => {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
 
-    const baziResults = document.createElement('div');
-    baziResults.classList.add('bazi-results');
+    if (username && password) {
+        // Replace with your actual login/signup logic (e.g., API call)
+        // For this demo, we'll just simulate a successful login
+        isLoggedIn = true; // Set login status to true
+        alert('Login Successful!');
+        hideLoginForm();
+        showWallet();
+    } else {
+        alert('Please enter valid credentials.');
+    }
+});
 
-    values.forEach(value => {
-        const baziBox = document.
+
+// ... (fetchData, createRow, populateTable functions - same as before)
+
+// Event listeners for Single, Patti, Juri buttons (Simulated functionality):
+document.getElementById('singleButton').addEventListener('click', () => {
+    showLoginForm(); // Show login form if not logged in
+
+    if (isLoggedIn) {
+        alert("Single button clicked (Simulated).");
+    }
+});
+
+document.getElementById('pattiButton').addEventListener('click', () => {
+    showLoginForm(); // Show login form if not logged in
+    if (isLoggedIn) {
+        alert("Patti button clicked (Simulated).");
+    }
+});
+
+document.getElementById('juriButton').addEventListener('click', () => {
+    showLoginForm(); // Show login form if not logged in
+    if (isLoggedIn) {
+        alert("Juri button clicked (Simulated).");
+    }
+});
+
+
+document.getElementById('playButton').addEventListener('click', () => {
+    showLoginForm(); // Show login form if not logged in
+    if (isLoggedIn) {
+        alert("Play button clicked (Simulated).");
+    }
+});
+
+// ... (Rest of the code - gameSelector event listener, initial population, etc.)
