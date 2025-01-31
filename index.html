@@ -159,6 +159,30 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+
+        #singleSelect {
+            display: none;
+            margin-top: 10px;
+        }
+
+        #singleSelect button {
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #singleSelect button.selected {
+            background-color: lightblue;
+        }
+
+        #singleSelect input[type="number"] {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 
@@ -196,6 +220,7 @@
     </div>
 
     <div class="game-table" id="gameTable"></div>
+    <div id="singleSelect"></div>
 
     <script src="gameLogic.js"></script>
 </body>
