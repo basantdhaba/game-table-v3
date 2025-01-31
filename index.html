@@ -54,31 +54,8 @@
       margin-top: 10px;
       padding: 10px;
       background-color: #f9f9f9;
-      width: 90%;
-      max-width: 300px;
+      width: 300px;
       border: 1px solid #ddd;
-      margin: 0 auto;
-    }
-
-    .box-container {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 10px;
-      background-color: #f8f9fa;
-      padding: 10px 0;
-    }
-
-    .box {
-      background-color: #e0f7fa;
-      padding: 15px 20px;
-      border-radius: 5px;
-      text-align: center;
-      font-size: 1.2em;
-      font-weight: bold;
-      margin: 5px;
-      flex: 1 1 calc(33% - 10px);
-      max-width: 150px;
     }
 
     .game-table {
@@ -89,26 +66,26 @@
       padding: 10px;
     }
 
+    /* Row Styling for Table Data */
     .row {
       display: flex;
       align-items: center;
       padding: 10px;
       border-bottom: 1px solid #ddd;
-      flex-wrap: wrap;
     }
 
     .date {
-      flex-basis: 100%;
+      flex-basis: 15%;
       font-weight: bold;
-      text-align: center;
+      text-align: left;
     }
 
     .bazi-results {
+      flex-basis: 85%;
       display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
+      overflow-x: auto;
       gap: 10px;
-      width: 100%;
     }
 
     .bazi-box {
@@ -118,6 +95,7 @@
       text-align: center;
       min-width: 60px;
       display: inline-block;
+      white-space: nowrap;
     }
 
     .bazi-number {
@@ -131,9 +109,20 @@
     }
 
     @media (max-width: 600px) {
-      .box {
-        max-width: 100px;
-        flex: 1 1 45%;
+      .row {
+        flex-direction: column;
+      }
+
+      .date {
+        flex-basis: 100%;
+        text-align: center;
+        margin-bottom: 5px;
+      }
+
+      .bazi-results {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        overflow-x: auto;
       }
 
       .bazi-box {
@@ -160,12 +149,6 @@
     <input type="email" id="email" placeholder="Enter your email" required style="width: 90%; padding: 8px; margin: 5px 0;">
     <input type="password" id="password" placeholder="Enter your password" required style="width: 90%; padding: 8px; margin: 5px 0;">
     <button id="loginSubmitButton" style="padding: 8px 16px; background-color: #28a745; color: white; border: none;">Submit</button>
-  </div>
-
-  <div class="box-container">
-    <div class="box" style="background-color: #e0f7fa;">Single</div>
-    <div class="box" style="background-color: #ffe0b2;">Patti</div>
-    <div class="box" style="background-color: #c8e6c9;">Juri</div>
   </div>
 
   <div class="game-table" id="gameTable"></div>
@@ -230,11 +213,7 @@
 
     function populateTable(selectedGame) {
       gameTable.innerHTML = '';
-      const data = gameData[selectedGame];
-
-      const displayData = selectedGame === "mainBazar" ? data.slice(0, 2) : data;
-
-      displayData.forEach(entry => {
+      gameData[selectedGame].forEach(entry => {
         const row = createRow(entry.date, entry.values);
         gameTable.appendChild(row);
       });
