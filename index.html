@@ -1,64 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Game Table Version 3.1</title>
-  <style>
-    /* ... (Your existing CSS styles) ... */
-    /* Responsive adjustments (add to your CSS) */
-    @media (max-width: 768px) {
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Table Version 3.1</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 1.5em; /* Adjusted for mobile */
+            padding: 10px;
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 1000;
+            padding: 10px 0;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        select {
+            padding: 8px; /* Adjusted padding */
+            font-size: 1em; /* Adjusted font size */
+        }
+
+        button {
+            padding: 8px 12px; /* Adjusted padding */
+            font-size: 1em; /* Adjusted font size */
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .game-table {
+            width: 100%;
+            margin: 10px auto; /* Adjusted margin */
+            background: #ffffff;
+            padding: 5px; /* Adjusted padding */
+            overflow-x: auto; /* For horizontal scrolling */
+        }
+
+        .row {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            padding: 5px 0; /* Adjusted padding */
+            align-items: center;
+        }
+
+        .date {
+            width: 60px; /* Adjusted width */
+            text-align: center;
+            font-weight: bold;
+            background-color: #f0f0f0;
+            padding: 5px; /* Adjusted padding */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em; /* Smaller font for date */
+        }
+
         .bazi-results {
-            flex-wrap: wrap;
+            display: flex;
+            width: 100%;
+            flex-wrap: wrap; /* Allow wrapping */
+            justify-content: space-around; /* Distribute space around boxes */
         }
+
         .bazi-box {
-            flex: 1 0 45%;
-            font-size: 1em;
+            flex: 0 0 18%; /* Adjust flex basis for even distribution */
+            height: 50px; /* Adjusted height */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #e0e7ff;
+            margin: 2px; /* Reduced margin */
+            font-size: 1em; /* Adjusted font size */
+            font-weight: bold;
+            border-radius: 5px;
+            text-align: center;
         }
+
+        .wallet-container {
+            position: absolute;
+            top: 10px; /* Adjusted position */
+            right: 10px; /* Adjusted position */
+            font-size: 0.8em; /* Smaller font */
+            display: none;
+            align-items: center;
+            gap: 5px; /* Reduced gap */
+        }
+
+        .wallet {
+            font-weight: bold;
+        }
+
         .box-container {
-            flex-wrap: wrap;
+            display: flex;
+            position: sticky;
+            top: 45px; /* Adjusted top position */
+            background-color: #f8f9fa;
+            padding: 5px 0; /* Adjusted padding */
+            z-index: 999;
+            justify-content: space-around;
+            gap: 5px; /* Reduced gap */
+            flex-wrap: wrap; /* Allow wrapping */
         }
+
         .box {
-            width: 45%;
-            font-size: 1em;
+            background-color: #e0f7fa;
+            padding: 8px 10px; /* Adjusted padding */
+            border-radius: 5px;
+            text-align: center;
+            font-size: 0.8em; /* Smaller font */
+            font-weight: bold;
+            width: 45%; /* Adjust width for mobile */
+            margin: 2px; /* Reduced margin */
         }
-    }
-  </style>
+
+        .login-form {
+            margin-top: 10px; /* Adjusted margin */
+            padding: 10px; /* Adjusted padding */
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 300px; /* Adjusted max width */
+            margin: 10px auto; /* Adjusted margin */
+            display: none;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px; /* Adjusted margin */
+            font-weight: bold;
+            font-size: 0.8em; /* Smaller font */
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px; /* Adjusted padding */
+            margin-bottom: 10px; /* Adjusted margin */
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.8em; /* Smaller font */
+        }
+
+        /* Media query for smaller screens (if needed) */
+        @media (max-width: 400px) {
+            .box {
+                width: 90%; /* Full width on very small screens */
+            }
+        }
+    </style>
 </head>
+
 <body>
+    <h1>Game Table Version 3.1</h1>
 
-  <h1>Game Table Version 3.1</h1>
+    <div class="wallet-container" id="walletContainer">
+        <span class="wallet" id="walletDisplay">Wallet: $500</span>
+        <button id="addMoneyButton">Add Money</button>
+    </div>
 
-  <div class="wallet-container" id="walletContainer">
-    <span class="wallet" id="walletDisplay">Wallet: $500</span>
-    <button id="addMoneyButton">Add Money</button>
-  </div>
+    <div class="header">
+        <select id="gameSelector">
+            <option value="kolkataFatafat">Kolkata Fatafat</option>
+            <option value="mainBazar">Main Bazar</option>
+            <option value="gmMatka">GM Matka</option>
+        </select>
+        <button id="playButton">Play</button>
+    </div>
 
-  <div class="header">
-    <select id="gameSelector">
-      <option value="kolkataFatafat">Kolkata Fatafat</option>
-      <option value="mainBazar">Main Bazar</option>
-      <option value="gmMatka">GM Matka</option>
-    </select>
-    <button id="playButton">Play</button>
-  </div>
+    <div class="box-container">
+        <div class="box" id="singleButton">Single</div>
+        <div class="box" id="pattiButton">Patti</div>
+        <div class="box" id="juriButton">Juri</div>
+    </div>
 
-  <div class="box-container">
-    <div class="box" id="singleButton">Single</div>
-    <div class="box" id="pattiButton">Patti</div>
-    <div class="box" id="juriButton">Juri</div>
-  </div>
+    <div class="login-form" id="loginForm">
+        <h2>Login or Signup</h2>
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Enter Username">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter Password">
+        <button id="loginButton">Login/Signup</button>
+    </div>
 
-  <div class="login-form" id="loginForm">
-    <h2>Login or Signup</h2>
-    <label for="username">Username</label>
-    <input type="text" id="username" placeholder="Enter Username">
-    <label for="password">Password</label>
-    <input type="password" id="password" placeholder="Enter Password">
-    <button id="loginButton">Login/Signup</button>
-  </div>
+    <div class="game-table" id="gameTable"></div>
 
-  <div class="game-table" id="gameTable"></div>
+    <script src="gameLogic.js"></script>
+</body>
 
-  <script src="gameLogic.js"></script> </body>
 </html>
