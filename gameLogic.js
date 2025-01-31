@@ -1,9 +1,11 @@
-// Wait for the DOM to be fully loaded before running the script
 document.addEventListener('DOMContentLoaded', () => {
     let wallet = 500;
     let isLoggedIn = false;
 
-    // ... (showWallet function - same as before)
+    function showWallet() {
+        document.getElementById('walletContainer').style.display = 'flex';
+        document.getElementById('walletDisplay').textContent = `Wallet: $${wallet}`;
+    }
 
     function showLoginForm() {
         if (!isLoggedIn) {
@@ -15,9 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('loginForm').style.display = 'none';
     }
 
-    // ... (Event listeners for Play, Single, Patti, Juri buttons)
+    document.getElementById('playButton').addEventListener('click', showLoginForm);
+    document.getElementById('singleButton').addEventListener('click', showLoginForm);
+    document.getElementById('pattiButton').addEventListener('click', showLoginForm);
+    document.getElementById('juriButton').addEventListener('click', showLoginForm);
 
-    // Event listener for the login button
     document.getElementById('loginButton').addEventListener('click', () => {
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
@@ -32,9 +36,80 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // ... (fetchData, createRow, populateTable functions - same as before)
+    document.getElementById('addMoneyButton').addEventListener('click', () => {
+        const amount = prompt('Enter the amount to add:');
+        if (amount && !isNaN(amount) && amount > 0) {
+            wallet += parseFloat(amount);
+            document.getElementById('walletDisplay').textContent = `Wallet: $${wallet}`;
+            alert(`$${amount} added to your wallet.`);
+        } else {
+            alert('Invalid amount.');
+        }
+    });
 
-    // Event listeners for Single, Patti, Juri buttons (Simulated functionality):
+    async function fetchData(game) {
+        try {
+            const response = await fetch(`/api/games/${game}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            return [];
+        }
+    }
+
+    function createRow(date, values) {
+        const row = document.createElement('div');
+        row.classList.add('row');
+
+        const dateBox = document.createElement('div');
+        dateBox.classList.add('date');
+        dateBox.textContent = date;
+        row.appendChild(dateBox);
+
+        const baziResults = document.createElement('div');
+        baziResults.classList.add('bazi-results');
+
+        values.forEach(value => {
+            const baziBox = document.createElement('div');
+            baziBox.classList.add('bazi-box');
+            baziBox.textContent = value;
+            baziResults.appendChild(baziBox);
+        });
+
+        row.appendChild(baziResults);
+        return row;
+    }
+
+    const gameTable = document.getElementById('gameTable');
+    const gameSelector = document.getElementById('gameSelector');
+
+    async function populateTable(selectedGame) {
+        gameTable.innerHTML = '';
+
+        const data = await fetchData(selectedGame);
+
+        if (data.length === 0) {
+            const message = document.createElement('p');
+            message.textContent = "No data available for this game.";
+            gameTable.appendChild(message);
+            return;
+        }
+
+        data.forEach(entry => {
+            const row = createRow(entry.date, entry.values);
+            gameTable.appendChild(row);
+        });
+    }
+
+    gameSelector.addEventListener('change', () => {
+        populateTable(gameSelector.value);
+    });
+
+    populateTable(gameSelector.value);
+
     document.getElementById('singleButton').addEventListener('click', () => {
         showLoginForm();
         if (isLoggedIn) {
@@ -62,4 +137,4 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("Play button clicked (Simulated).");
         }
     });
-}); // End of DOMContentLoaded event listener
+});
