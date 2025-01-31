@@ -1,64 +1,110 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Result Display</title>
-    <style>
-        table {
-            width: 80%;
-            margin: 20px auto;
-            border-collapse: collapse;
+  <style>
+    /* ... (your existing styles) ... */
+    /* Styles for sticky header and box container */
+    .header { /* ... (your existing styles) */ }
+    .box-container { /* ... (your existing styles) */ }
+    .box { /* ... (your existing styles) */ }
+
+    /* Styles for the game table */
+    .game-table {
+       /* ... (your existing styles) */
+       overflow-x: auto; /* Add horizontal scroll if needed */
+    }
+    .row { /* ... (your existing styles) */ }
+    .date { /* ... (your existing styles) */ }
+    .bazi-results { /* ... (your existing styles) */ }
+    .bazi-box { /* ... (your existing styles) */ }
+
+    /* Add some basic mobile responsiveness */
+    @media (max-width: 768px) {
+        .bazi-results {
+            flex-wrap: wrap; /* Allow boxes to wrap on smaller screens */
         }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: center;
+        .bazi-box {
+            flex: 1 0 45%; /* Adjust width for smaller screens */
+            margin: 5px;
+            font-size: 1em;
         }
-        th {
-            background-color: #f2f2f2;
+        .box-container {
+            flex-wrap: wrap; /* Allow boxes to wrap */
         }
-    </style>
+        .box {
+            width: 45%; /* Adjust width for smaller screens */
+            margin: 5px;
+        }
+    }
+
+  </style>
 </head>
 <body>
 
-    <table id="resultTable">
-        <thead>
-            <tr>
-                <th></th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
-            </tr>
-        </thead>
-        <tbody>
-            </tbody>
-    </table>
+  <h1>Game Table Version 3.1</h1>
 
-    <script>
-        const data = { // Representing data from your image
-            "15/01": ["9", "0", "7", "2", "3", "2", "2", "6", "6", "6", "7", "4"],
-            "16/01": ["2", "6", "5", "5", "9", "2", "6", "5", "3", "3", "1", "3"],
-            "17/01": ["1", "4", "4", "1", "1", "8", " ", "6", "1", "1", "1", "2"],
-            "18/01": [" ", " ", " ", " ", "X", "X", "X", "7", "5", "4", "8", "2"],
-            "19/01": ["9", " ", "3", "6", " ", " ", " ", "1", "8", "9", "5", "9"],
-            "20/01": ["2", " ", "8", "0", "4", "9", "8", "1", "9", "7", "5", "0"],
-            "21/01": [" ", " ", " ", " ", " ", " ", " ", " ", "8", "8", "9", "8"],
-            "22/01": ["6", "3", "5", "5", "1", "4", "8", "9", "8", "5", "9", "5"],
-            "23/01": [" ", " ", " ", " ", " ", " ", " ", " ", "5", "7", "5", "2"],
-            "24/01": ["7", "1", "1", "4", "8", "5", "9", "0", " ", " ", " ", " "],
-            "25/01": ["4", "6", "3", "3", "3", "2", "2", "9", " ", " ", " ", " "]
-        };
+  <div class="wallet-container" id="walletContainer">
+    <span class="wallet" id="walletDisplay">Wallet: $500</span>
+    <button id="addMoneyButton">Add Money</button>
+  </div>
 
-        const tableBody = document.querySelector("#resultTable tbody");
+  <div class="header">
+    <select id="gameSelector">
+      <option value="kolkataFatafat">Kolkata Fatafat</option>
+      <option value="mainBazar">Main Bazar</option>
+      <option value="gmMatka">GM Matka</option>
+    </select>
+    <button id="playButton">Play</button>
+  </div>
 
-        for (const date in data) {
-            const row = tableBody.insertRow();
-            const dateCell = row.insertCell();
-            dateCell.textContent = date;
+  <div class="box-container">
+    <div class="box" id="singleButton">Single</div>
+    <div class="box" id="pattiButton">Patti</div>
+    <div class="box" id="juriButton">Juri</div>
+  </div>
 
-            const values = data[date];
-            for (const value of values) {
-                const cell = row.insertCell();
-                cell.textContent = value;
-            }
-        }
-    </script>
+  <div class="login-form" id="loginForm">
+    </div>
+
+  <div class="game-table" id="gameTable"></div>
+
+  <script>
+    // ... (Your existing JavaScript code for wallet, login, etc.) ...
+
+    const gameData = {
+      // ... (Your existing game data) ...
+    };
+
+    // ... (Your existing createRow function) ...
+
+    const gameTable = document.getElementById('gameTable');
+    const gameSelector = document.getElementById('gameSelector');
+
+    function populateTable(selectedGame) {
+      gameTable.innerHTML = ''; // Clear existing table data
+      if (gameData[selectedGame]) { // Check if data exists for selected game
+        gameData[selectedGame].forEach(entry => {
+          const row = createRow(entry.date, entry.values);
+          gameTable.appendChild(row);
+        });
+      } else {
+        const noDataMessage = document.createElement('p');
+        noDataMessage.textContent = "No data available for this game.";
+        gameTable.appendChild(noDataMessage);
+      }
+
+    }
+
+    // ... (rest of your JavaScript code) ...
+
+    gameSelector.addEventListener('change', () => {
+      populateTable(gameSelector.value);
+    });
+
+    // Initial table population
+    populateTable(gameSelector.value);
+
+  </script>
 
 </body>
 </html>
