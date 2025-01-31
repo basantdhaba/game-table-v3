@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
 
-        if (username && password) {
+        if (username === "testuser" && password === "password123") { // Demo credentials
             isLoggedIn = true;
             alert('Login Successful!');
             hideLoginForm();
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchData(game) {
         try {
-            const response = await fetch(`/api/games/${game}`);
+            const response = await fetch(`/api/games/${game}`); // Replace with your API endpoint
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 numButton.textContent = i;
                 numButton.classList.add('pattiNumButton');
                 numButton.addEventListener('click', () => {
-                    if (currentPattiSet.length < 3 && i > currentPattiSet[currentPattiSet.length - 1]) {
+                    if (currentPattiSet.length < 3 && i > (currentPattiSet.length > 0 ? currentPattiSet[currentPattiSet.length - 1] : -1)) {
                         currentPattiSet.push(i);
                         numButton.classList.add('selected');
                         if (currentPattiSet.length === 3) {
@@ -187,18 +187,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     } else if (currentPattiSet.length > 0 && i < currentPattiSet[currentPattiSet.length - 1]) {
                         alert("Please select numbers in ascending order.");
+                    } else if (currentPattiSet.length === 3) {
+                        alert("You can only select three numbers for a Patti set.");
                     }
                 });
                 pattiSelectDiv.appendChild(numButton);
             }
 
             const eraseButton = document.createElement('button');
-            eraseButton.textContent = 'Erase Last';
-            eraseButton.addEventListener('click', () => {
-                selectedPattiSets.pop();
-                pattiSelectedSetsDiv.innerHTML = selectedPattiSets.map(set => `<span>${set}</span>`).join(', ');
-            });
-            pattiSelectDiv.appendChild(eraseButton);
-
-            const amountInput = document.createElement('input');
-            amountInput.type = 'number
