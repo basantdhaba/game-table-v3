@@ -3,52 +3,168 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Game Table v3.0</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="gameLogic.js" defer></script>
+  <title>Game Table Version 3.0</title>
+  <style>
+    /* Global Styling */
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+    }
+
+    header {
+      background: #007bff;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      font-size: 24px;
+    }
+
+    /* Fixed Result Table */
+    .result-table-container {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: white;
+      border-bottom: 2px solid #ddd;
+      z-index: 100;
+      overflow-x: auto;
+    }
+
+    .result-table {
+      width: 100%;
+      text-align: center;
+      border-collapse: collapse;
+    }
+
+    .result-table th, .result-table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+
+    .result-table th {
+      background: #007bff;
+      color: white;
+    }
+
+    /* Game Control Area */
+    .game-controls {
+      margin-top: 220px;
+      padding: 20px;
+    }
+
+    .control-buttons {
+      display: flex;
+      justify-content: space-evenly;
+      padding: 10px;
+    }
+
+    .game-button {
+      padding: 10px 15px;
+      background: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .game-button:hover {
+      background: #0056b3;
+    }
+
+    /* Game Area */
+    .game-section {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      padding: 20px;
+    }
+
+    .game-box {
+      border: 2px solid #ddd;
+      background: #ffffff;
+      padding: 20px;
+      text-align: center;
+      border-radius: 8px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .game-section {
+        grid-template-columns: repeat(1, 1fr);
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>Game Table v3.0</h1>
 
-  <!-- Login/Register Forms -->
-  <div id="auth-section">
-    <h2>Login/Register</h2>
-    <form id="loginForm">
-      <input type="text" placeholder="Username" required>
-      <input type="password" placeholder="Password" required>
-      <button type="submit">Login</button>
-    </form>
-  </div>
+<header>
+  Game Table Version 3.0
+</header>
 
-  <!-- Game Calculation Section -->
-  <div id="game-section">
-    <h2>Bet Calculator</h2>
-    <label for="betAmount">Bet Amount:</label>
-    <input type="number" id="betAmount" placeholder="Enter your bet amount">
-
-    <label for="betType">Bet Type:</label>
-    <select id="betType">
-      <option value="high">High (2.0x)</option>
-      <option value="medium">Medium (1.5x)</option>
-      <option value="low">Low (1.2x)</option>
-    </select>
-
-    <button onclick="handleBetCalculation()">Calculate Winnings</button>
-
-    <p id="result"></p>
-  </div>
-
-  <!-- Game Result Table -->
-  <h2>Game Results</h2>
-  <table id="resultTable">
+<!-- Fixed Result Table -->
+<div class="result-table-container">
+  <table class="result-table">
     <thead>
       <tr>
-        <th>Bet Amount</th>
-        <th>Bet Type</th>
-        <th>Winnings</th>
+        <th>Date</th>
+        <th>Game 1</th>
+        <th>Game 2</th>
+        <th>Game 3</th>
+        <th>Result</th>
       </tr>
     </thead>
-    <tbody></tbody>
+    <tbody>
+      <tr>
+        <td>15/01</td>
+        <td>469</td>
+        <td>678</td>
+        <td>577</td>
+        <td>9</td>
+      </tr>
+      <tr>
+        <td>16/01</td>
+        <td>460</td>
+        <td>789</td>
+        <td>345</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <td>17/01</td>
+        <td>340</td>
+        <td>167</td>
+        <td>670</td>
+        <td>7</td>
+      </tr>
+    </tbody>
   </table>
+</div>
+
+<!-- Game Controls -->
+<div class="game-controls">
+  <div class="control-buttons">
+    <button class="game-button">Single</button>
+    <button class="game-button">Patti</button>
+    <button class="game-button">Judi</button>
+  </div>
+
+  <!-- Game Boxes Section -->
+  <div class="game-section">
+    <div class="game-box">
+      <h3>Single</h3>
+      <p>Choose your numbers from 0 to 9</p>
+    </div>
+    <div class="game-box">
+      <h3>Patti</h3>
+      <p>Select 3-digit combinations</p>
+    </div>
+    <div class="game-box">
+      <h3>Judi</h3>
+      <p>Pick two different numbers in two rows</p>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
