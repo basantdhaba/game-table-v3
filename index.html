@@ -1,89 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Table Version 3.1</title>
   <style>
-    /* ... (your existing styles) ... */
-    .game-table {
-      overflow-x: auto; /* For horizontal scrolling if needed */
-    }
-        /* Basic responsive adjustments */
-        @media (max-width: 768px) {
-            .bazi-results {
-                flex-wrap: wrap;
-            }
-            .bazi-box {
-                flex: 1 0 45%; /* Adjust as needed */
-                font-size: 1em; /* Smaller font on mobile */
-            }
-            .box-container {
-                flex-wrap: wrap;
-            }
-            .box {
-                width: 45%;
-                font-size: 1em;
-            }
+    /* ... (Your existing CSS styles) ... */
+    /* Responsive adjustments (add to your CSS) */
+    @media (max-width: 768px) {
+        .bazi-results {
+            flex-wrap: wrap;
         }
+        .bazi-box {
+            flex: 1 0 45%;
+            font-size: 1em;
+        }
+        .box-container {
+            flex-wrap: wrap;
+        }
+        .box {
+            width: 45%;
+            font-size: 1em;
+        }
+    }
   </style>
 </head>
 <body>
-  <script>
-    // ... (your existing wallet, login, etc. JavaScript) ...
 
-    // Simulate fetching data (replace with actual API call later)
-    function fetchData(game) {
-      return new Promise(resolve => {
-        setTimeout(() => { // Simulate network latency
-          const demoData = { // Your original gameData
-            "kolkataFatafat": [ /* ... */ ],
-            "mainBazar": [ /* ... */ ],
-            "gmMatka": [ /* ... */ ]
-          };
-          resolve(demoData[game] || []); // Resolve with data or empty array
-        }, 500); // 500ms delay
-      });
-    }
+  <h1>Game Table Version 3.1</h1>
 
+  <div class="wallet-container" id="walletContainer">
+    <span class="wallet" id="walletDisplay">Wallet: $500</span>
+    <button id="addMoneyButton">Add Money</button>
+  </div>
 
-    function createRow(date, values) {
-      // ... (your existing createRow function) ...
-    }
+  <div class="header">
+    <select id="gameSelector">
+      <option value="kolkataFatafat">Kolkata Fatafat</option>
+      <option value="mainBazar">Main Bazar</option>
+      <option value="gmMatka">GM Matka</option>
+    </select>
+    <button id="playButton">Play</button>
+  </div>
 
-    const gameTable = document.getElementById('gameTable');
-    const gameSelector = document.getElementById('gameSelector');
+  <div class="box-container">
+    <div class="box" id="singleButton">Single</div>
+    <div class="box" id="pattiButton">Patti</div>
+    <div class="box" id="juriButton">Juri</div>
+  </div>
 
-    async function populateTable(selectedGame) {
-      gameTable.innerHTML = ''; // Clear table
+  <div class="login-form" id="loginForm">
+    <h2>Login or Signup</h2>
+    <label for="username">Username</label>
+    <input type="text" id="username" placeholder="Enter Username">
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Enter Password">
+    <button id="loginButton">Login/Signup</button>
+  </div>
 
-      try {
-        const data = await fetchData(selectedGame); // Fetch data
+  <div class="game-table" id="gameTable"></div>
 
-        if (data.length === 0) {
-          const message = document.createElement('p');
-          message.textContent = "No data available.";
-          gameTable.appendChild(message);
-          return; // Exit early
-        }
-
-        data.forEach(entry => {
-          const row = createRow(entry.date, entry.values);
-          gameTable.appendChild(row);
-        });
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        const message = document.createElement('p');
-        message.textContent = "Error fetching data. Please try again later.";
-        gameTable.appendChild(message);
-      }
-    }
-
-    gameSelector.addEventListener('change', () => {
-      populateTable(gameSelector.value);
-    });
-
-    // Initial table population
-    populateTable(gameSelector.value);
-
-  </script>
-
-</body>
+  <script src="gameLogic.js"></script> </body>
 </html>
