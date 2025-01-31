@@ -160,14 +160,12 @@
             border-radius: 4px;
         }
 
-        #singleSelect,
-        #pattiSelect {
+        #singleSelect {
             display: none;
             margin-top: 10px;
         }
 
-        #singleSelect button,
-        #pattiSelect button {
+        #singleSelect button {
             padding: 10px;
             margin: 5px;
             border: 1px solid #ccc;
@@ -175,25 +173,15 @@
             cursor: pointer;
         }
 
-        #singleSelect button.selected,
-        #pattiSelect button.selected {
+        #singleSelect button.selected {
             background-color: lightblue;
         }
 
-        #singleSelect input[type="number"],
-        #pattiSelect input[type="number"] {
+        #singleSelect input[type="number"] {
             padding: 10px;
             margin: 10px 0;
             width: 100%;
             box-sizing: border-box;
-        }
-
-        #pattiSelectedSets {
-            margin-top: 10px;
-        }
-
-        #pattiSelectedSets span {
-            margin-right: 5px;
         }
     </style>
 </head>
@@ -232,12 +220,7 @@
     </div>
 
     <div class="game-table" id="gameTable"></div>
-
     <div id="singleSelect"></div>
-
-    <div id="pattiSelect">
-        <div id="pattiSelectedSets"></div>
-    </div>
 
     <script src="gameLogic.js"></script>
 </body>
