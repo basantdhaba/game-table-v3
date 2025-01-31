@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     let wallet = 500;
     let isLoggedIn = false;
+    let selectedPattiSets = [];
 
     function showWallet() {
         document.getElementById('walletContainer').style.display = 'flex';
@@ -158,24 +159,46 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Patti Number Selection (without CP)
+    const pattiSelectDiv = document.getElementById('pattiSelect');
+    const pattiSelectedSetsDiv = document.getElementById('pattiSelectedSets');
+    let currentPattiSet = [];
+
     document.getElementById('pattiButton').addEventListener('click', () => {
         showLoginForm();
         if (isLoggedIn) {
-            alert("Patti button clicked (Simulated).");
-        }
-    });
+            pattiSelectDiv.style.display = 'block';
+            pattiSelectDiv.innerHTML = ''; // Clear previous numbers
+            pattiSelectedSetsDiv.innerHTML = ''; // Clear previous sets
+            currentPattiSet = [];
 
-    document.getElementById('juriButton').addEventListener('click', () => {
-        showLoginForm();
-        if (isLoggedIn) {
-            alert("Juri button clicked (Simulated).");
-        }
-    });
+            for (let i = 0; i <= 9; i++) {
+                const numButton = document.createElement('button');
+                numButton.textContent = i;
+                numButton.classList.add('pattiNumButton');
+                numButton.addEventListener('click', () => {
+                    if (currentPattiSet.length < 3 && i > currentPattiSet[currentPattiSet.length - 1]) {
+                        currentPattiSet.push(i);
+                        numButton.classList.add('selected');
+                        if (currentPattiSet.length === 3) {
+                            selectedPattiSets.push(currentPattiSet.join(''));
+                            pattiSelectedSetsDiv.innerHTML = selectedPattiSets.map(set => `<span>${set}</span>`).join(', ');
+                            currentPattiSet = [];
+                        }
+                    } else if (currentPattiSet.length > 0 && i < currentPattiSet[currentPattiSet.length - 1]) {
+                        alert("Please select numbers in ascending order.");
+                    }
+                });
+                pattiSelectDiv.appendChild(numButton);
+            }
 
-    document.getElementById('playButton').addEventListener('click', () => {
-        showLoginForm();
-        if (isLoggedIn) {
-            alert("Play button clicked (Simulated).");
-        }
-    });
-});
+            const eraseButton = document.createElement('button');
+            eraseButton.textContent = 'Erase Last';
+            eraseButton.addEventListener('click', () => {
+                selectedPattiSets.pop();
+                pattiSelectedSetsDiv.innerHTML = selectedPattiSets.map(set => `<span>${set}</span>`).join(', ');
+            });
+            pattiSelectDiv.appendChild(eraseButton);
+
+            const amountInput = document.createElement('input');
+            amountInput.type = 'number
