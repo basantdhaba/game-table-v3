@@ -3,29 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Game Table - Bet Calculator</title>
+  <title>Game Table v3.0</title>
   <link rel="stylesheet" href="styles.css">
   <script src="gameLogic.js" defer></script>
 </head>
 <body>
-  <h1>Bet Calculation Game</h1>
-  
-  <div>
+  <h1>Game Table v3.0</h1>
+
+  <!-- Login/Register Forms -->
+  <div id="auth-section">
+    <h2>Login/Register</h2>
+    <form id="loginForm">
+      <input type="text" placeholder="Username" required>
+      <input type="password" placeholder="Password" required>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <!-- Game Calculation Section -->
+  <div id="game-section">
+    <h2>Bet Calculator</h2>
     <label for="betAmount">Bet Amount:</label>
     <input type="number" id="betAmount" placeholder="Enter your bet amount">
-  </div>
-  
-  <div>
+
     <label for="betType">Bet Type:</label>
     <select id="betType">
       <option value="high">High (2.0x)</option>
       <option value="medium">Medium (1.5x)</option>
       <option value="low">Low (1.2x)</option>
     </select>
-  </div>
-  
-  <button onclick="handleBetCalculation()">Calculate Winnings</button>
 
-  <p id="result"></p>
+    <button onclick="handleBetCalculation()">Calculate Winnings</button>
+
+    <p id="result"></p>
+  </div>
+
+  <!-- Game Result Table -->
+  <h2>Game Results</h2>
+  <table id="resultTable">
+    <thead>
+      <tr>
+        <th>Bet Amount</th>
+        <th>Bet Type</th>
+        <th>Winnings</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 </body>
 </html>
