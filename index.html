@@ -5,166 +5,280 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Game Table Version 3.0</title>
   <style>
-    /* Global Styling */
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
       margin: 0;
-      padding: 0;
-      background-color: #f4f4f9;
     }
 
-    header {
-      background: #007bff;
-      color: white;
-      padding: 10px;
+    h1 {
       text-align: center;
-      font-size: 24px;
+      font-size: 2em;
+      padding: 10px;
     }
 
-    /* Fixed Result Table */
-    .result-table-container {
-      position: fixed;
+    .header {
+      position: sticky;
       top: 0;
-      width: 100%;
-      background: white;
-      border-bottom: 2px solid #ddd;
-      z-index: 100;
-      overflow-x: auto;
-    }
-
-    .result-table {
-      width: 100%;
-      text-align: center;
-      border-collapse: collapse;
-    }
-
-    .result-table th, .result-table td {
-      border: 1px solid #ddd;
-      padding: 10px;
-    }
-
-    .result-table th {
-      background: #007bff;
-      color: white;
-    }
-
-    /* Game Control Area */
-    .game-controls {
-      margin-top: 220px;
-      padding: 20px;
-    }
-
-    .control-buttons {
+      background: #fff;
+      z-index: 1000;
+      padding: 10px 0;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
       display: flex;
-      justify-content: space-evenly;
-      padding: 10px;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
     }
 
-    .game-button {
+    select {
+      padding: 10px;
+      font-size: 1.2em;
+    }
+
+    button {
       padding: 10px 15px;
-      background: #007bff;
+      font-size: 1.2em;
+      cursor: pointer;
+      background-color: #007bff;
       color: white;
       border: none;
-      cursor: pointer;
-      border-radius: 5px;
+      border-radius: 4px;
     }
 
-    .game-button:hover {
-      background: #0056b3;
+    button:hover {
+      background-color: #0056b3;
     }
 
-    /* Game Area */
-    .game-section {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      padding: 20px;
-    }
-
-    .game-box {
-      border: 2px solid #ddd;
+    .game-table {
+      width: 100%;
+      max-width: 1000px;
+      margin: 20px auto;
       background: #ffffff;
-      padding: 20px;
-      text-align: center;
-      border-radius: 8px;
+      padding: 10px;
     }
 
-    /* Responsive */
-    @media (max-width: 768px) {
-      .game-section {
-        grid-template-columns: repeat(1, 1fr);
-      }
+    .wallet {
+      text-align: left;
+      font-size: 1.2em;
+      margin: 10px 20px;
+      color: #333;
+      font-weight: bold;
+    }
+
+    .login-form, .play-area {
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 15px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .play-area {
+      display: none;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input[type="text"], input[type="password"], input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .tab-buttons {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+    }
+
+    .tab-buttons button {
+      width: 100px;
+      padding: 10px;
+      font-size: 1em;
+    }
+
+    .tab-section {
+      display: none;
+      margin-top: 15px;
+    }
+
+    .number-selection {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .number-box {
+      width: 40px;
+      height: 40px;
+      background-color: #e0f7fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 4px;
+      border: 2px solid transparent;
+    }
+
+    .number-box.selected {
+      background-color: #007bff;
+      color: white;
+      border: 2px solid #0056b3;
+    }
+
+    .amount-section {
+      margin-top: 15px;
+    }
+
+    .amount-section input[type="number"] {
+      max-width: 100px;
+    }
+
+    .summary {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .cp-section {
+      margin-top: 15px;
+    }
+
+    .judi-lines {
+      margin-top: 10px;
+    }
+
+    .judi-line {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
     }
   </style>
 </head>
 <body>
 
-<header>
-  Game Table Version 3.0
-</header>
+  <h1>Game Table Version 3.0</h1>
 
-<!-- Fixed Result Table -->
-<div class="result-table-container">
-  <table class="result-table">
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Game 1</th>
-        <th>Game 2</th>
-        <th>Game 3</th>
-        <th>Result</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>15/01</td>
-        <td>469</td>
-        <td>678</td>
-        <td>577</td>
-        <td>9</td>
-      </tr>
-      <tr>
-        <td>16/01</td>
-        <td>460</td>
-        <td>789</td>
-        <td>345</td>
-        <td>0</td>
-      </tr>
-      <tr>
-        <td>17/01</td>
-        <td>340</td>
-        <td>167</td>
-        <td>670</td>
-        <td>7</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<!-- Game Controls -->
-<div class="game-controls">
-  <div class="control-buttons">
-    <button class="game-button">Single</button>
-    <button class="game-button">Patti</button>
-    <button class="game-button">Judi</button>
+  <div class="header">
+    <select id="gameSelector">
+      <option value="kolkataFatafat">Kolkata Fatafat</option>
+      <option value="mainBazar">Main Bazar</option>
+      <option value="gmMatka">GM Matka</option>
+    </select>
+    <button id="playButton">Play</button>
   </div>
 
-  <!-- Game Boxes Section -->
-  <div class="game-section">
-    <div class="game-box">
-      <h3>Single</h3>
-      <p>Choose your numbers from 0 to 9</p>
-    </div>
-    <div class="game-box">
-      <h3>Patti</h3>
-      <p>Select 3-digit combinations</p>
-    </div>
-    <div class="game-box">
-      <h3>Judi</h3>
-      <p>Pick two different numbers in two rows</p>
-    </div>
+  <div class="wallet" id="walletDisplay">Wallet: $500</div>
+
+  <!-- Result Table Always Visible -->
+  <div class="game-table" id="gameTable"></div>
+
+  <!-- Login Form -->
+  <div class="login-form" id="loginForm">
+    <h2>Login or Register</h2>
+    <label for="username">Username</label>
+    <input type="text" id="username" placeholder="Enter Username">
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Enter Password">
+    <button id="loginButton">Login/Register</button>
   </div>
-</div>
+
+  <!-- Play Area for Game Tabs -->
+  <div class="play-area" id="playArea">
+    <div class="tab-buttons">
+      <button id="singleTab">Single</button>
+      <button id="pattiTab">Patti</button>
+      <button id="judiTab">Judi</button>
+    </div>
+
+    <div class="tab-section" id="singleSection">
+      <h2>Select Your Single Numbers</h2>
+      <div class="number-selection" id="singleNumbers"></div>
+      <div class="amount-section">
+        <label for="singleAmount">Enter Amount (Minimum $10)</label>
+        <input type="number" id="singleAmount" min="10" placeholder="Amount">
+        <button id="submitSingle">Submit</button>
+      </div>
+    </div>
+
+    <div class="tab-section" id="pattiSection">
+      <h2>Select Patti Numbers (Ascending Order)</h2>
+      <div class="number-selection" id="pattiNumbers"></div>
+      <button id="cpButton">CP</button>
+      <div class="amount-section">
+        <label for="pattiAmount">Enter Amount (Minimum $10)</label>
+        <input type="number" id="pattiAmount" min="10" placeholder="Amount">
+        <button id="submitPatti">Submit</button>
+      </div>
+    </div>
+
+    <div class="tab-section" id="judiSection">
+      <h2>Select Judi Numbers</h2>
+      <div class="judi-lines">
+        <div class="judi-line" id="judiLine1"></div>
+        <div class="judi-line" id="judiLine2"></div>
+      </div>
+      <div class="amount-section">
+        <label for="judiAmount">Enter Amount (Minimum $10)</label>
+        <input type="number" id="judiAmount" min="10" placeholder="Amount">
+        <button id="submitJudi">Submit</button>
+      </div>
+    </div>
+
+    <div class="summary" id="summary"></div>
+  </div>
+
+  <script>
+    let wallet = 500;
+
+    function toggleTab(sectionId) {
+      document.querySelectorAll('.tab-section').forEach(section => {
+        section.style.display = 'none';
+      });
+      document.getElementById(sectionId).style.display = 'block';
+    }
+
+    document.getElementById('playButton').addEventListener('click', () => {
+      document.getElementById('loginForm').style.display = 'block';
+    });
+
+    document.getElementById('loginButton').addEventListener('click', () => {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      if (username === 'test@demo.com' && password === '12345') {
+        alert('Login Successful!');
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('playArea').style.display = 'block';
+      } else {
+        alert('Invalid Credentials! Please use test@demo.com and password 12345');
+      }
+    });
+
+    document.getElementById('singleTab').addEventListener('click', () => toggleTab('singleSection'));
+    document.getElementById('pattiTab').addEventListener('click', () => toggleTab('pattiSection'));
+    document.getElementById('judiTab').addEventListener('click', () => toggleTab('judiSection'));
+
+    // Generate Single Number Boxes
+    const singleNumbersContainer = document.getElementById('singleNumbers');
+    for (let i = 0; i <= 9; i++) {
+      const numberBox = document.createElement('div');
+      numberBox.textContent = i;
+      numberBox.classList.add('number-box');
+      numberBox.addEventListener('click', () => {
+        numberBox.classList.toggle('selected');
+      });
+      singleNumbersContainer.appendChild(numberBox);
+    }
+  </script>
 
 </body>
 </html>
