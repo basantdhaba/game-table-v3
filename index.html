@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,13 +8,19 @@
     <style>
         /* ... (Your CSS styles - same as the previous full code) ... */
         .wallet-container {
-            top: 10px; /* Adjusted position */
-            left: 10px; /* Position on the left */
-            right: auto; /* Remove right positioning */
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.2em;
+            display: none;
+            align-items: center;
+            gap: 10px;
         }
     </style>
 </head>
+
 <body>
+
     <h1>Game Table Version 3.1</h1>
 
     <div class="wallet-container" id="walletContainer">
@@ -47,4 +54,7 @@
 
     <div class="game-table" id="gameTable"></div>
 
-    <script src="gameLogic.js"></script> </body>  </html>
+    <script src="gameLogic.js"></script>
+</body>
+
+</html>
