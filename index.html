@@ -54,32 +54,31 @@
       margin-top: 10px;
       padding: 10px;
       background-color: #f9f9f9;
-      width: 300px;
+      width: 90%;
+      max-width: 300px;
       border: 1px solid #ddd;
+      margin: 0 auto;
     }
 
     .box-container {
       display: flex;
-      justify-content: space-evenly;
+      justify-content: center;
+      flex-wrap: wrap;
       margin-top: 10px;
-      text-align: center;
       background-color: #f8f9fa;
       padding: 10px 0;
-      position: sticky;
-      top: 110px;
-      z-index: 999;
-      flex-wrap: wrap;
     }
 
     .box {
       background-color: #e0f7fa;
       padding: 15px 20px;
       border-radius: 5px;
-      flex-basis: 30%;
       text-align: center;
       font-size: 1.2em;
       font-weight: bold;
       margin: 5px;
+      flex: 1 1 calc(33% - 10px);
+      max-width: 150px;
     }
 
     .game-table {
@@ -90,26 +89,26 @@
       padding: 10px;
     }
 
-    /* Row Styling for Table Data */
     .row {
       display: flex;
       align-items: center;
       padding: 10px;
       border-bottom: 1px solid #ddd;
+      flex-wrap: wrap;
     }
 
     .date {
-      flex-basis: 15%;
+      flex-basis: 100%;
       font-weight: bold;
-      text-align: left;
+      text-align: center;
     }
 
     .bazi-results {
-      flex-basis: 85%;
       display: flex;
-      flex-wrap: nowrap;
-      overflow-x: auto;
+      justify-content: center;
+      flex-wrap: wrap;
       gap: 10px;
+      width: 100%;
     }
 
     .bazi-box {
@@ -119,7 +118,6 @@
       text-align: center;
       min-width: 60px;
       display: inline-block;
-      white-space: nowrap;
     }
 
     .bazi-number {
@@ -133,20 +131,9 @@
     }
 
     @media (max-width: 600px) {
-      .row {
-        flex-direction: column;
-      }
-
-      .date {
-        flex-basis: 100%;
-        text-align: center;
-        margin-bottom: 5px;
-      }
-
-      .bazi-results {
-        flex-wrap: nowrap;
-        justify-content: flex-start;
-        overflow-x: auto;
+      .box {
+        max-width: 100px;
+        flex: 1 1 45%;
       }
 
       .bazi-box {
@@ -176,15 +163,9 @@
   </div>
 
   <div class="box-container">
-    <div class="box" style="background-color: #e0f7fa;">
-      Single
-    </div>
-    <div class="box" style="background-color: #ffe0b2;">
-      Patti
-    </div>
-    <div class="box" style="background-color: #c8e6c9;">
-      Juri
-    </div>
+    <div class="box" style="background-color: #e0f7fa;">Single</div>
+    <div class="box" style="background-color: #ffe0b2;">Patti</div>
+    <div class="box" style="background-color: #c8e6c9;">Juri</div>
   </div>
 
   <div class="game-table" id="gameTable"></div>
@@ -249,7 +230,11 @@
 
     function populateTable(selectedGame) {
       gameTable.innerHTML = '';
-      gameData[selectedGame].forEach(entry => {
+      const data = gameData[selectedGame];
+
+      const displayData = selectedGame === "mainBazar" ? data.slice(0, 2) : data;
+
+      displayData.forEach(entry => {
         const row = createRow(entry.date, entry.values);
         gameTable.appendChild(row);
       });
