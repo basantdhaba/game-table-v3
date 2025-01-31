@@ -65,7 +65,7 @@
       font-weight: bold;
     }
 
-    .login-form, .play-area {
+    .login-form, .game-area {
       max-width: 500px;
       margin: 20px auto;
       padding: 15px;
@@ -74,7 +74,7 @@
       box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     }
 
-    .play-area {
+    .game-area {
       display: none;
     }
 
@@ -90,23 +90,6 @@
       margin-bottom: 15px;
       border: 1px solid #ddd;
       border-radius: 4px;
-    }
-
-    .tab-buttons {
-      display: flex;
-      justify-content: space-around;
-      margin-top: 20px;
-    }
-
-    .tab-buttons button {
-      width: 100px;
-      padding: 10px;
-      font-size: 1em;
-    }
-
-    .tab-section {
-      display: none;
-      margin-top: 15px;
     }
 
     .number-selection {
@@ -148,18 +131,12 @@
       font-weight: bold;
     }
 
-    .cp-section {
-      margin-top: 15px;
-    }
-
-    .judi-lines {
-      margin-top: 10px;
-    }
-
-    .judi-line {
-      display: flex;
-      gap: 10px;
-      margin-top: 8px;
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .number-box {
+        width: 30px;
+        height: 30px;
+      }
     }
   </style>
 </head>
@@ -178,10 +155,6 @@
 
   <div class="wallet" id="walletDisplay">Wallet: $500</div>
 
-  <!-- Result Table Always Visible -->
-  <div class="game-table" id="gameTable"></div>
-
-  <!-- Login Form -->
   <div class="login-form" id="loginForm">
     <h2>Login or Register</h2>
     <label for="username">Username</label>
@@ -191,60 +164,19 @@
     <button id="loginButton">Login/Register</button>
   </div>
 
-  <!-- Play Area for Game Tabs -->
-  <div class="play-area" id="playArea">
-    <div class="tab-buttons">
-      <button id="singleTab">Single</button>
-      <button id="pattiTab">Patti</button>
-      <button id="judiTab">Judi</button>
+  <div class="game-area" id="gameArea">
+    <h2>Select Your Numbers</h2>
+    <div class="number-selection" id="numberSelection"></div>
+    <div class="amount-section">
+      <label for="amountInput">Enter Amount (Minimum $10)</label>
+      <input type="number" id="amountInput" min="10" placeholder="Amount">
+      <button id="submitSelectionButton">Submit Selection</button>
     </div>
-
-    <div class="tab-section" id="singleSection">
-      <h2>Select Your Single Numbers</h2>
-      <div class="number-selection" id="singleNumbers"></div>
-      <div class="amount-section">
-        <label for="singleAmount">Enter Amount (Minimum $10)</label>
-        <input type="number" id="singleAmount" min="10" placeholder="Amount">
-        <button id="submitSingle">Submit</button>
-      </div>
-    </div>
-
-    <div class="tab-section" id="pattiSection">
-      <h2>Select Patti Numbers (Ascending Order)</h2>
-      <div class="number-selection" id="pattiNumbers"></div>
-      <button id="cpButton">CP</button>
-      <div class="amount-section">
-        <label for="pattiAmount">Enter Amount (Minimum $10)</label>
-        <input type="number" id="pattiAmount" min="10" placeholder="Amount">
-        <button id="submitPatti">Submit</button>
-      </div>
-    </div>
-
-    <div class="tab-section" id="judiSection">
-      <h2>Select Judi Numbers</h2>
-      <div class="judi-lines">
-        <div class="judi-line" id="judiLine1"></div>
-        <div class="judi-line" id="judiLine2"></div>
-      </div>
-      <div class="amount-section">
-        <label for="judiAmount">Enter Amount (Minimum $10)</label>
-        <input type="number" id="judiAmount" min="10" placeholder="Amount">
-        <button id="submitJudi">Submit</button>
-      </div>
-    </div>
-
     <div class="summary" id="summary"></div>
   </div>
 
   <script>
     let wallet = 500;
-
-    function toggleTab(sectionId) {
-      document.querySelectorAll('.tab-section').forEach(section => {
-        section.style.display = 'none';
-      });
-      document.getElementById(sectionId).style.display = 'block';
-    }
 
     document.getElementById('playButton').addEventListener('click', () => {
       document.getElementById('loginForm').style.display = 'block';
@@ -257,18 +189,14 @@
       if (username === 'test@demo.com' && password === '12345') {
         alert('Login Successful!');
         document.getElementById('loginForm').style.display = 'none';
-        document.getElementById('playArea').style.display = 'block';
+        document.getElementById('gameArea').style.display = 'block';
       } else {
         alert('Invalid Credentials! Please use test@demo.com and password 12345');
       }
     });
 
-    document.getElementById('singleTab').addEventListener('click', () => toggleTab('singleSection'));
-    document.getElementById('pattiTab').addEventListener('click', () => toggleTab('pattiSection'));
-    document.getElementById('judiTab').addEventListener('click', () => toggleTab('judiSection'));
-
-    // Generate Single Number Boxes
-    const singleNumbersContainer = document.getElementById('singleNumbers');
+    // Create number selection boxes (0 to 9)
+    const numberSelectionContainer = document.getElementById('numberSelection');
     for (let i = 0; i <= 9; i++) {
       const numberBox = document.createElement('div');
       numberBox.textContent = i;
@@ -276,8 +204,34 @@
       numberBox.addEventListener('click', () => {
         numberBox.classList.toggle('selected');
       });
-      singleNumbersContainer.appendChild(numberBox);
+      numberSelectionContainer.appendChild(numberBox);
     }
+
+    document.getElementById('submitSelectionButton').addEventListener('click', () => {
+      const selectedNumbers = Array.from(document.querySelectorAll('.number-box.selected')).map(box => box.textContent);
+      const amount = parseInt(document.getElementById('amountInput').value);
+
+      if (selectedNumbers.length === 0) {
+        alert('Please select at least one number.');
+        return;
+      }
+
+      if (!amount || amount < 10) {
+        alert('Please enter a valid amount (minimum $10).');
+        return;
+      }
+
+      const totalCost = selectedNumbers.length * amount;
+
+      if (totalCost > wallet) {
+        alert('Insufficient wallet balance.');
+        return;
+      }
+
+      wallet -= totalCost;
+      document.getElementById('walletDisplay').textContent = `Wallet: $${wallet}`;
+      document.getElementById('summary').textContent = `You selected numbers: ${selectedNumbers.join(', ')} with a total bet of $${totalCost}`;
+    });
   </script>
 
 </body>
