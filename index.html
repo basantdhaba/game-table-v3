@@ -1,6 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Table Version 3.1</title>
     <style>
         /* ... (Your CSS styles - same as the previous full code) ... */
         .wallet-container {
@@ -11,5 +14,37 @@
     </style>
 </head>
 <body>
-    <script src="gameLogic.js"></script> </body>
-</html>
+    <h1>Game Table Version 3.1</h1>
+
+    <div class="wallet-container" id="walletContainer">
+        <span class="wallet" id="walletDisplay">Wallet: $500</span>
+        <button id="addMoneyButton">Add Money</button>
+    </div>
+
+    <div class="header">
+        <select id="gameSelector">
+            <option value="kolkataFatafat">Kolkata Fatafat</option>
+            <option value="mainBazar">Main Bazar</option>
+            <option value="gmMatka">GM Matka</option>
+        </select>
+        <button id="playButton">Play</button>
+    </div>
+
+    <div class="box-container">
+        <div class="box" id="singleButton">Single</div>
+        <div class="box" id="pattiButton">Patti</div>
+        <div class="box" id="juriButton">Juri</div>
+    </div>
+
+    <div class="login-form" id="loginForm">
+        <h2>Login or Signup</h2>
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Enter Username">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter Password">
+        <button id="loginButton">Login/Signup</button>
+    </div>
+
+    <div class="game-table" id="gameTable"></div>
+
+    <script src="gameLogic.js"></script> </body>  </html>
